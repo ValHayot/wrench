@@ -229,12 +229,14 @@ void BatchServiceTest::do_BatchJobBrokenEstimateWaitingTimeTest_test() {
   ASSERT_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, 
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,  {
-                                           {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "BOGUS"}
+                                           {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "BOGUS"},
+                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })), std::invalid_argument);
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, 
                                    {"Host1", "Host2", "Host3", "Host4"}, 0, {
-                                           {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "easy_bf"}
+                                           {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "easy_bf"},
+                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   // Create a WMS
@@ -415,7 +417,8 @@ void BatchServiceTest::do_BatchJobBasicEstimateWaitingTimeTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, 
                                    {"Host1", "Host2", "Host3", "Host4"}, 0, {
-                                           {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "conservative_bf"}
+                                           {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "conservative_bf"},
+                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   // Create a WMS
@@ -657,7 +660,8 @@ void BatchServiceTest::do_BatchJobEstimateWaitingTimeTest_test() {
           new wrench::BatchService(hostname, 
                                    {"Host1", "Host2", "Host3", "Host4"}, 0, {
                                            {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "conservative_bf"},
-                                           {wrench::BatchServiceProperty::BATCH_RJMS_DELAY, "0"}
+                                           {wrench::BatchServiceProperty::BATCH_RJMS_DELAY, "0"},
+                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   simulation->add(new wrench::FileRegistryService(hostname));
@@ -937,7 +941,8 @@ void BatchServiceTest::do_BatchJobLittleComplexEstimateWaitingTimeTest_test() {
           new wrench::BatchService(hostname, 
                                    {"Host1", "Host2", "Host3", "Host4"}, 0, {
                                            {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "conservative_bf"},
-                                           {wrench::BatchServiceProperty::BATCH_RJMS_DELAY, "0"}
+                                           {wrench::BatchServiceProperty::BATCH_RJMS_DELAY, "0"},
+                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   // Create a WMS
