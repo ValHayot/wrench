@@ -2254,21 +2254,21 @@ namespace wrench {
             // Establish a tether so that if the main process dies, then batsched is brutally killed
             int tether[2]; // this is a local variable, only defined in this scope
             if (pipe(tether) != 0) {  // the pipe however is opened during the whole duration of both processes
-              // TODO: Kill Batsched since it's running!
-              throw std::runtime_error("startBatsched(): pipe failed.");
+              kill(top_pid, SIGKILL); //kill the other child (that has fork-exec'd batsched)
+              throw std::runtime_error("startBatsched(): tether pipe creation failed!");
             }
             //now fork a process that sleeps until its parent is dead
             int nested_pid = fork();
 
             if (nested_pid > 0) {
-              //I am the parent, whose child fork exec'd batsched
+              //I am the parent, whose child has fork-exec'd batsched
             } else if (nested_pid == 0) {
               char foo;
               close(tether[1]); // closing write end
               int returned = read(tether[0], &foo, 1); // blocking read which returns when the parent dies
               //check if the child that forked batsched is still running
               if (getpgid(top_pid)) {
-                kill(top_pid, SIGKILL); //kill the other child that fork exec'd batsched
+                kill(top_pid, SIGKILL); //kill the other child that has fork-exec'd batsched
               }
               //my parent has died so, I will kill myself instead of exiting and becoming a zombie
               kill(getpid(), SIGKILL);

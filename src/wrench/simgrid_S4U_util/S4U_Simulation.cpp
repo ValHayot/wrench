@@ -9,12 +9,14 @@
  */
 
 #include <iostream>
-#include <xbt/ex.hpp>
 #include <set>
 #include <cfloat>
 #include <wrench/services/compute/ComputeService.h>
 #include <wrench/util/UnitParser.h>
 #include <simgrid/plugins/energy.h>
+
+#include <simgrid/s4u.hpp>
+
 
 
 #include "wrench/simgrid_S4U_util/S4U_Simulation.h"

@@ -12,7 +12,8 @@
 #include <wrench-dev.h>
 #include <services/storage/StorageServiceMessage.h>
 #include "wrench/services/storage/simple/NetworkConnection.h"
-#include <xbt/ex.hpp>
+#include <simgrid/s4u.hpp>
+
 
 
 XBT_LOG_NEW_DEFAULT_CATEGORY(simple_storage_service_data_connection, "Log category for Data Connection");
