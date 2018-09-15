@@ -205,9 +205,7 @@ void BatchServiceTest::do_BatchTraceFileReplayTest_test() {
   // Create a Batch Service
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
-                                   {"Host1", "Host2", "Host3", "Host4"}, 0, {
-                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {"Host1", "Host2", "Host3", "Host4"}, 0, {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -292,7 +290,6 @@ void BatchServiceTest::do_BatchTraceFileReplayTestWithFailedJob_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )));
 
@@ -472,7 +469,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, "/not_there_invalid"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -481,7 +477,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, "/not_there.invalid"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -490,7 +485,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, "/not_there.swf"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -508,7 +502,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -523,7 +516,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -539,7 +531,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -555,7 +546,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -572,7 +562,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestSWF_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )));
 
@@ -752,7 +741,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, "/not_there_invalid"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -761,7 +749,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, "/not_there.invalid"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -771,7 +758,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, "/not_there.json"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -808,7 +794,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -847,7 +832,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -880,7 +864,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -918,7 +901,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -957,7 +939,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -997,7 +978,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -1036,7 +1016,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )), std::invalid_argument);
 
@@ -1077,7 +1056,6 @@ void BatchServiceTest::do_WorkloadTraceFileTestJSON_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    }
           )));
 

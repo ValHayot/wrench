@@ -213,7 +213,6 @@ void BatchServiceOutputCSVFileTest::do_SimpleOutputCSVFile_test() {
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::OUTPUT_CSV_JOB_LOG, "/bogus"},
                                     {wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })), std::invalid_argument);
 
   // OK output file
@@ -221,7 +220,6 @@ void BatchServiceOutputCSVFileTest::do_SimpleOutputCSVFile_test() {
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::OUTPUT_CSV_JOB_LOG, output_csv_file},
                                     {wrench::BatchServiceProperty::SIMULATED_WORKLOAD_TRACE_FILE, trace_file_path},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   // Create a WMS

@@ -143,7 +143,6 @@ void BatchServiceTest::do_BogusSetupTest_test() {
   ASSERT_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "BOGUS"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })),
                std::invalid_argument);
 
@@ -151,7 +150,6 @@ void BatchServiceTest::do_BogusSetupTest_test() {
   ASSERT_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {}, 0,
                                    {{wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "FCFS"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })),
                std::invalid_argument);
 
@@ -159,7 +157,6 @@ void BatchServiceTest::do_BogusSetupTest_test() {
   ASSERT_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "HostFast"}, 0,
                                    {{wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "FCFS"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })),
                std::invalid_argument);
 
@@ -168,7 +165,6 @@ void BatchServiceTest::do_BogusSetupTest_test() {
   ASSERT_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "HostManyCores"}, 0,
                                    {{wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "FCFS"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })),
                std::invalid_argument);
 
@@ -176,7 +172,6 @@ void BatchServiceTest::do_BogusSetupTest_test() {
   ASSERT_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "RAMHost"}, 0,
                                    {{wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM, "FCFS"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })),
                std::invalid_argument);
 
@@ -346,8 +341,7 @@ void BatchServiceTest::do_TerminateStandardJobsTest_test() {
   // Create a Batch Service
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"}
-                                   })));
+                                   { })));
 
   simulation->add(new wrench::FileRegistryService(hostname));
 
@@ -501,8 +495,7 @@ void BatchServiceTest::do_OneStandardJobTaskTest_test() {
   // Create a Batch Service
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   simulation->add(new wrench::FileRegistryService(hostname));
 
@@ -690,8 +683,7 @@ void BatchServiceTest::do_TwoStandardJobSubmissionTest_test() {
   // Create a Batch Service
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"}
-                                   })));
+                                   {})));
 
   simulation->add(new wrench::FileRegistryService(hostname));
 
@@ -832,8 +824,7 @@ void BatchServiceTest::do_PilotJobTaskTest_test() {
   // Create a Batch Service
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname, {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a File Registry Service
   simulation->add(new wrench::FileRegistryService(hostname));
@@ -1031,8 +1022,7 @@ void BatchServiceTest::do_StandardPlusPilotJobTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -1168,8 +1158,7 @@ void BatchServiceTest::do_InsufficientCoresTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -1297,8 +1286,7 @@ void BatchServiceTest::do_noArgumentsJobSubmissionTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -1455,8 +1443,7 @@ void BatchServiceTest::do_StandardJobTimeOutTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -1598,8 +1585,7 @@ void BatchServiceTest::do_PilotJobTimeOutTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -1823,7 +1809,7 @@ void BatchServiceTest::do_BestFitTaskTest_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::StandardJobExecutorProperty::HOST_SELECTION_ALGORITHM, "BESTFIT"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},})));
+                                    })));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -1994,7 +1980,6 @@ void BatchServiceTest::do_FirstFitTaskTest_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::StandardJobExecutorProperty::HOST_SELECTION_ALGORITHM, "BESTFIT"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   // Create a WMS
@@ -2280,7 +2265,7 @@ void BatchServiceTest::do_RoundRobinTask_test() {
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
                                    {{wrench::StandardJobExecutorProperty::HOST_SELECTION_ALGORITHM, "ROUNDROBIN"},
-                                    {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},})));
+                                    })));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -2475,9 +2460,7 @@ void BatchServiceTest::do_StandardJobInsidePilotJobTimeOutTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {
-                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -2661,7 +2644,7 @@ void BatchServiceTest::do_StandardJobInsidePilotJobSucessTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"},0,
-                                   {{wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},})));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -2828,9 +2811,7 @@ void BatchServiceTest::do_InsufficientCoresInsidePilotJobTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {
-                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -2979,9 +2960,7 @@ void BatchServiceTest::do_MultipleStandardTaskTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,
-                                   {
-                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
@@ -3136,7 +3115,6 @@ void BatchServiceTest::do_DifferentBatchAlgorithmsSubmissionTest_test() {
                                    {"Host1", "Host2", "Host3", "Host4"}, 0,  {
                                            {wrench::BatchServiceProperty::BATCH_SCHEDULING_ALGORITHM,     "filler"},
                                            {wrench::BatchServiceProperty::BATCH_QUEUE_ORDERING_ALGORITHM, "fcfs"},
-                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
                                    })));
 
   // Create a WMS
@@ -3295,9 +3273,7 @@ void BatchServiceTest::do_ShutdownWithPendingRunningJobsTest_test() {
   ASSERT_NO_THROW(compute_service = simulation->add(
           new wrench::BatchService(hostname,
 
-                                   {"Host1"}, 0,  {
-                                           {wrench::BatchServiceProperty::BATSCHED_LOGGING_MUTED, "true"},
-                                   })));
+                                   {"Host1"}, 0,  {})));
 
   // Create a WMS
   wrench::WMS *wms = nullptr;
