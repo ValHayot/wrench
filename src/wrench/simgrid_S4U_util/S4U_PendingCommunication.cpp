@@ -35,30 +35,25 @@ namespace wrench {
         if (this->comm_ptr->get_state() != simgrid::s4u::Activity::State::FINISHED) {
           this->comm_ptr->wait();
         }
-      } catch (xbt_ex &e) {
-        if (e.category == network_error) {
-          throw std::shared_ptr<NetworkError>(
-                  new NetworkError(NetworkError::RECEIVING, NetworkError::FAILURE, this->mailbox_name));
-        } else if (e.category == timeout_error) {
-          throw std::shared_ptr<NetworkError>(
-                  new NetworkError(NetworkError::RECEIVING, NetworkError::TIMEOUT, this->mailbox_name));
-        } else {
-          throw std::runtime_error(
-                  "S4U_PendingCommunication::wait(): Unexpected xbt_ex exception (" + std::to_string(e.category) + ")");
-        }
+      } catch (simgrid::NetworkFailureException &e) {
+        throw std::shared_ptr<NetworkError>(
+                new NetworkError(NetworkError::RECEIVING, NetworkError::FAILURE, this->mailbox_name));
+      } catch (simgrid::TimeoutError &e) {
+        throw std::shared_ptr<NetworkError>(
+                new NetworkError(NetworkError::RECEIVING, NetworkError::TIMEOUT, this->mailbox_name));
       }
       return std::move(this->simulation_message);
     }
 
-    /**
-     * @brief Wait for any pending communication completion
-     * @param pending_comms: a list of pending communications
-     * @param timeout: timeout value in seconds (-1 means no timeout)
-     *
-     * @return the index of the comm to which something happened (success or failure)
-     *
-     * @throw std::invalid_argument
-     */
+/**
+ * @brief Wait for any pending communication completion
+ * @param pending_comms: a list of pending communications
+ * @param timeout: timeout value in seconds (-1 means no timeout)
+ *
+ * @return the index of the comm to which something happened (success or failure)
+ *
+ * @throw std::invalid_argument
+ */
     unsigned long S4U_PendingCommunication::waitForSomethingToHappen(
             std::vector<std::unique_ptr<S4U_PendingCommunication>> pending_comms, double timeout) {
       std::vector<S4U_PendingCommunication *> raw_pointer_comms;
@@ -69,15 +64,15 @@ namespace wrench {
     }
 
 
-    /**
-     * @brief Wait for any pending communication completion
-     * @param pending_comms: a list of pending communications
-     * @param timeout: timeout value in seconds (-1 means no timeout)
-     *
-     * @return the index of the comm to which something happened (success or failure)
-     *
-     * @throw std::invalid_argument
-     */
+/**
+ * @brief Wait for any pending communication completion
+ * @param pending_comms: a list of pending communications
+ * @param timeout: timeout value in seconds (-1 means no timeout)
+ *
+ * @return the index of the comm to which something happened (success or failure)
+ *
+ * @throw std::invalid_argument
+ */
     unsigned long S4U_PendingCommunication::waitForSomethingToHappen(
             std::vector<S4U_PendingCommunication *> pending_comms, double timeout) {
 
@@ -97,14 +92,10 @@ namespace wrench {
       try {
         index = (unsigned long) simgrid::s4u::Comm::wait_any(&pending_s4u_comms);
         MessageManager::removeReceivedMessages(pending_comms[index]->mailbox_name, pending_comms[index]->simulation_message.get());
-      } catch (xbt_ex &e) {
-        if (e.category != network_error) {
-          throw std::runtime_error(
-                  "S4U_PendingCommunication::waitForSomethingToHappen(): Unexpected xbt_ex exception (" +
-                  std::to_string(e.category) + ")");
-        }
+      } catch (simgrid::NetworkFailureException &e) {
         one_comm_failed = true;
       } catch (std::exception &e) {
+        // Probably Paranoid
         throw std::runtime_error("S4U_PendingCommunication::waitForSomethingToHappen(): Unexpected std::exception  (" +
                                  std::string(e.what()) + ")");
       }
@@ -113,15 +104,10 @@ namespace wrench {
         for (index = 0; index < pending_s4u_comms.size(); index++) {
           try {
             pending_s4u_comms[index]->test();
-          } catch (xbt_ex &e) {
-            if (e.category == network_error) {
+          } catch (simgrid::NetworkFailureException &e) {
               break;
-            } else {
-              throw std::runtime_error(
-                      "S4U_PendingCommunication::waitForSomethingToHappen(): Unexpected xbt_ex exception (" +
-                      std::to_string(e.category) + ")");
-            }
           } catch (std::exception &e) {
+            // Probably paranoid
             throw std::runtime_error(
                     "S4U_PendingCommunication::waitForSomethingToHappen(): Unexpected std::exception  (" +
                     std::string(e.what()) + ")");
@@ -132,11 +118,11 @@ namespace wrench {
       return index;
     }
 
-    /**
-     * @brief Constructor
-     *
-     * @param mailbox: a mailbox name
-     */
+/**
+ * @brief Constructor
+ *
+ * @param mailbox: a mailbox name
+ */
     S4U_PendingCommunication::S4U_PendingCommunication(std::string mailbox) : mailbox_name(mailbox) {
     }
 
