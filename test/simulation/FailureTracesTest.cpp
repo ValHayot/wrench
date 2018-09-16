@@ -194,7 +194,7 @@ private:
     }
 };
 
-TEST_F(FailureTracesTest, DISABLED_CheckHowSimgridRespondsToFailureTracesTest) {
+TEST_F(FailureTracesTest, CheckHowSimgridRespondsToFailureTracesTest) {
   DO_TEST_WITH_FORK(do_CheckHowSimgridRespondsToFailureTraces_test);
 }
 
