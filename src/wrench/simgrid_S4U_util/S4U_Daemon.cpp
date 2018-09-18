@@ -131,8 +131,9 @@ namespace wrench {
      * @brief Start the daemon
      *
      * @param daemonized: whether the S4U actor should be daemonized
+     * @param autorestart: whether the S4U actor should automatically restart after a host failure
      */
-    void S4U_Daemon::startDaemon(bool daemonized) {
+    void S4U_Daemon::startDaemon(bool daemonized, bool autorestart) {
 
       // Check that there is a lifesaver
       if (not this->life_saver) {
@@ -149,9 +150,11 @@ namespace wrench {
 
       // Create the s4u_actor
       try {
+        std::function<void()> start_daemon_method = std::bind(&S4U_Daemon::startDaemonMain, this);
+
         this->s4u_actor = simgrid::s4u::Actor::create(this->process_name.c_str(),
                                                       simgrid::s4u::Host::by_name(hostname),
-                                                      S4U_DaemonActor(this));
+                                                      start_daemon_method);
       } catch (std::exception &e) {
         // Some internal SimGrid exceptions...
         std::abort();
@@ -164,6 +167,9 @@ namespace wrench {
       if (not this->terminated) {
         if (daemonized) {
           this->s4u_actor->daemonize();
+          if (autorestart) {
+            this->s4u_actor->set_auto_restart(true);
+          }
         }
         this->s4u_actor->on_exit(daemon_goodbye, (void *) (this));
 
@@ -171,6 +177,15 @@ namespace wrench {
         simgrid::s4u::MailboxPtr mailbox = simgrid::s4u::Mailbox::by_name(this->mailbox_name);
         mailbox->set_receiver(this->s4u_actor);
       }
+    }
+
+    void S4U_Daemon::startDaemonMain() {
+      try {
+        this->main();
+      } catch (std::exception &e) {
+        throw;
+      }
+      this->setTerminated();
     }
 
     /**

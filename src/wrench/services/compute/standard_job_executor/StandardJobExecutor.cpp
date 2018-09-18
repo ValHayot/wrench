@@ -482,7 +482,7 @@ namespace wrench {
         ));
 
         workunit_executor->simulation = this->simulation;
-        workunit_executor->start(workunit_executor, true);
+        workunit_executor->start(workunit_executor, true, false);
 
         // Update core availabilities
         this->core_availabilities[target_host] -= target_num_cores;

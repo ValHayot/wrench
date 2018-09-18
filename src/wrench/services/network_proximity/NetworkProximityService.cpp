@@ -215,7 +215,7 @@ namespace wrench {
       // Start all network daemons
       try {
         for (auto &network_daemon : this->network_daemons) {
-          network_daemon->start(network_daemon, true); // daemonized
+          network_daemon->start(network_daemon, true, true); // daemonized, autorestart
         }
       } catch (std::runtime_error &e) {
         throw;

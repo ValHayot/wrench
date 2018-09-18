@@ -308,7 +308,7 @@ namespace wrench {
       auto job_manager_raw_ptr = new JobManager(this);
       std::shared_ptr<JobManager> job_manager = std::shared_ptr<JobManager>(job_manager_raw_ptr);
       job_manager->simulation = this->simulation;
-      job_manager->start(job_manager, true); // Always daemonize
+      job_manager->start(job_manager, true, false); // Always daemonize, never autorestart
       return job_manager;
     }
 
@@ -320,7 +320,7 @@ namespace wrench {
       auto data_movement_manager_raw_ptr = new DataMovementManager(this);
       std::shared_ptr<DataMovementManager> data_movement_manager = std::shared_ptr<DataMovementManager>(data_movement_manager_raw_ptr);
       data_movement_manager->simulation = this->simulation;
-      data_movement_manager->start(data_movement_manager, true); // Always daemonize
+      data_movement_manager->start(data_movement_manager, true, false); // Always daemonize, never autorestart
       return data_movement_manager;
     }
 

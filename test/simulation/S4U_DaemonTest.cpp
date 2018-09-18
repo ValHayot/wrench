@@ -107,7 +107,7 @@ private:
       // Start the daemon without a life saver
       success = true;
       try {
-        daemon->startDaemon(false);
+        daemon->startDaemon(false, false);
       } catch (std::runtime_error &e) {
         success = false;
       }
@@ -132,7 +132,7 @@ private:
       // Start a daemon without a simulation pointer
       success = true;
       try {
-        daemon->startDaemon(false);
+        daemon->startDaemon(false, false);
       } catch (std::runtime_error &e) {
         success = false;
       }
@@ -142,7 +142,7 @@ private:
 
       // Start the daemon for real
       daemon->simulation = this->simulation;
-      daemon->startDaemon(false);
+      daemon->startDaemon(false, false);
 
       // sleep 10 seconds
       wrench::Simulation::sleep(10);

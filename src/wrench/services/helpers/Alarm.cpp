@@ -88,7 +88,7 @@ namespace wrench {
               new Alarm(date, hostname, reply_mailbox_name, msg, suffix));
       alarm_ptr->simulation = simulation;
       try {
-        alarm_ptr->start(alarm_ptr, true); // daemonize
+        alarm_ptr->start(alarm_ptr, true, false); // daemonize
       } catch (std::invalid_argument &e) {
         throw;
       }

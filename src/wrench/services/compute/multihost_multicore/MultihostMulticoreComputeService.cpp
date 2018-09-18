@@ -662,7 +662,7 @@ namespace wrench {
                        MultihostMulticoreComputeServiceProperty::TASK_SCHEDULING_HOST_SELECTION_ALGORITHM)}},
               {}));
 
-      executor->start(executor, true);
+      executor->start(executor, true, false);
       this->standard_job_executors.insert(executor);
       this->running_jobs.insert(job);
 
@@ -740,7 +740,7 @@ namespace wrench {
 
       // Start the compute service
       try {
-        cs->start(cs, true);
+        cs->start(cs, true, false);
       } catch (std::runtime_error &e) {
         throw;
       }

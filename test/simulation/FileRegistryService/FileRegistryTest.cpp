@@ -12,7 +12,7 @@
 #include <wrench-dev.h>
 #include <algorithm>
 
-#include "../include/TestWithFork.h"
+#include "../../include/TestWithFork.h"
 
 class FileRegistryTest : public ::testing::Test {
 

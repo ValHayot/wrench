@@ -180,11 +180,11 @@ namespace wrench {
      * 
      * @throw std::runtime_error
      */
-    void Service::start(std::shared_ptr<Service> this_service, bool daemonize) {
+    void Service::start(std::shared_ptr<Service> this_service, bool daemonize, bool autorestart) {
       try {
         this->state = Service::UP;
         this->createLifeSaver(this_service);
-        this->startDaemon(daemonize);
+        this->startDaemon(daemonize, autorestart);
       } catch (std::invalid_argument &e) {
         throw std::runtime_error("Service::start(): " + std::string(e.what()));
       }

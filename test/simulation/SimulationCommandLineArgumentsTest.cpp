@@ -428,7 +428,7 @@ void SimulationCommandLineArgumentsTest::do_NoLogArgument_test() {
 /**********************************************************************/
 
 
-TEST_F(SimulationCommandLineArgumentsTest, ActivateEnergyArgument) {
+TEST_F(SimulationCommandLineArgumentsTest, DISABLED_ActivateEnergyArgument) {
   DO_TEST_WITH_FORK(do_ActivateEnergyArgument_test);
 }
 
@@ -474,7 +474,7 @@ void SimulationCommandLineArgumentsTest::do_ActivateEnergyArgument_test() {
   waitpid(pid, &exit_code, 0);
 
   // Check exit code
-  ASSERT_NE(exit_code, 0);
+  ASSERT_EQ(exit_code, 0);
 
   // Check that the error was what we thought it was (based on output!)
   stderr_file = fopen("/tmp/unit_tests.stderr", "r");

@@ -245,9 +245,10 @@ set(TEST_FILES
         test/simulation/wms/WMSTest.cpp
         test/simulation/wms/MultipleWMSTest.cpp
         test/simulation/wms/WMSOptimizationsTest.cpp
+        test/simulation/failure_traces/ServiceRestartTest.cpp
         test/simulation/VirtualizedClusterServiceTest.cpp
         test/simulation/NetworkProximityTest.cpp
-        test/simulation/FileRegistryTest.cpp
+        test/simulation/FileRegistryService/FileRegistryTest.cpp
         test/simulation/JobManagerTest.cpp
         test/simulation/SimpleSimulationTest.cpp
         test/simulation/DynamicServiceCreationTest.cpp
@@ -257,7 +258,7 @@ set(TEST_FILES
         test/simulation/simulation_output/SimulationTimestampFileCopyTest.cpp
         test/simulation/ScratchSpaceTest.cpp
         test/simulation/S4U_DaemonTest.cpp
-        test/simulation/FailureTracesTest.cpp
+        test/simulation/failure_traces/OldPreliminaryTest.cpp
         test/pilot_job/CriticalPathSchedulerTest.cpp
         test/misc/PointerUtilTest.cpp
         examples/simple-example/scheduler/pilot_job/CriticalPathPilotJobScheduler.cpp

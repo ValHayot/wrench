@@ -1723,7 +1723,7 @@ namespace wrench {
                                            BatchServiceProperty::SIMULATE_COMPUTATION_AS_SLEEP)},
                           },
                           {}));
-          executor->start(executor, true);
+          executor->start(executor, true, false);
           batch_job->setBeginTimeStamp(S4U_Simulation::getClock());
           batch_job->setEndingTimeStamp(S4U_Simulation::getClock() + allocated_time);
           this->running_standard_job_executors.insert(executor);
@@ -1771,7 +1771,7 @@ namespace wrench {
           job->setComputeService(cs);
 
           try {
-            cs->start(cs, true);
+            cs->start(cs, true, false);
             batch_job->setBeginTimeStamp(S4U_Simulation::getClock());
             double timeout_timestamp = std::min<double>(job->getDuration(), allocated_time);
             batch_job->setEndingTimeStamp(S4U_Simulation::getClock() + timeout_timestamp);
@@ -1903,7 +1903,7 @@ namespace wrench {
       );
       try {
         this->workload_trace_replayer->simulation = this->simulation;
-        this->workload_trace_replayer->start(this->workload_trace_replayer, true);
+        this->workload_trace_replayer->start(this->workload_trace_replayer, true, true);
       } catch (std::runtime_error &e) {
         throw;
       }
@@ -2377,7 +2377,7 @@ namespace wrench {
                                                   std::to_string(this->batsched_port),
                                                   data));
       network_listener->simulation = this->simulation;
-      network_listener->start(network_listener, true);
+      network_listener->start(network_listener, true, false);
       network_listener = nullptr; // detached mode
 //      this->network_listeners.insert(std::move(network_listener));
 
@@ -2437,7 +2437,7 @@ namespace wrench {
                                                   std::to_string(this->batsched_port),
                                                   data));
       network_listener->simulation = this->simulation;
-      network_listener->start(network_listener, true);
+      network_listener->start(network_listener, true, false);
       network_listener = nullptr; // detached mode
 //      this->network_listeners.insert(network_listener);
     }
@@ -2472,7 +2472,7 @@ namespace wrench {
                                                     std::to_string(this->batsched_port),
                                                     data));
         network_listener->simulation = this->simulation;
-        network_listener->start(network_listener, true);
+        network_listener->start(network_listener, true, false);
         network_listener = nullptr; // detached mode
 //        this->network_listeners.insert(std::move(network_listener));
       } catch (std::runtime_error &e) {
@@ -2501,7 +2501,7 @@ namespace wrench {
         /* Get the nodes and cores per nodes asked for */
         unsigned long cores_per_node_asked_for = batch_job->getAllocatedCoresPerNode();
         unsigned long num_nodes_asked_for = batch_job->getNumNodes();
-        unsigned long allocated_time = batch_job->getAllocatedTime();
+        unsigned long allocated_time = (unsigned long) batch_job->getAllocatedTime();
 
         batch_submission_data["events"][i]["timestamp"] = batch_job->getArrivalTimeStamp();
         batch_submission_data["events"][i]["type"] = "JOB_SUBMITTED";
@@ -2522,7 +2522,7 @@ namespace wrench {
                                                   std::to_string(this->batsched_port),
                                                   data));
       network_listener->simulation = this->simulation;
-      network_listener->start(network_listener, true);
+      network_listener->start(network_listener, true, false);
       network_listener = nullptr; // detached mode
 //      this->network_listeners.insert(std::move(network_listener));
     }

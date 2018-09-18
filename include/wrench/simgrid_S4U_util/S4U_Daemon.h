@@ -53,7 +53,7 @@ namespace wrench {
 
         virtual ~S4U_Daemon();
 
-        void startDaemon(bool daemonized);
+        void startDaemon(bool daemonized, bool autorestart);
 
         void createLifeSaver(std::shared_ptr<S4U_Daemon> reference);
 
@@ -90,6 +90,8 @@ namespace wrench {
         simgrid::s4u::MutexPtr daemon_lock;
         bool terminated;
         simgrid::s4u::ActorPtr s4u_actor;
+
+        void startDaemonMain();
 
 #ifdef ACTOR_TRACKING_OUTPUT
         std::string process_name_prefix;

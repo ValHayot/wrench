@@ -16,12 +16,12 @@
 #include <wrench/services/compute/batch/BatchServiceMessage.h>
 #include "wrench/workflow/job/PilotJob.h"
 
-#include "../include/TestWithFork.h"
+#include "../../include/TestWithFork.h"
 
-XBT_LOG_NEW_DEFAULT_CATEGORY(failure_traces_test, "Log category for FailureTracesTest");
+XBT_LOG_NEW_DEFAULT_CATEGORY(failure_traces_test, "Log category for OldPreliminaryTest");
 
 
-class FailureTracesTest : public ::testing::Test {
+class OldPreliminaryTest : public ::testing::Test {
 
 public:
     wrench::StorageService *storage_service1 = nullptr;
@@ -36,7 +36,7 @@ public:
 
 
 protected:
-    FailureTracesTest() {
+    OldPreliminaryTest() {
 
       // Create the simplest workflow
       workflow = std::unique_ptr<wrench::Workflow>(new wrench::Workflow());
@@ -85,7 +85,7 @@ protected:
 class FailureTracesTestTestWMS : public wrench::WMS {
 
 public:
-    FailureTracesTestTestWMS(FailureTracesTest *test,
+    FailureTracesTestTestWMS(OldPreliminaryTest *test,
                               const std::set<wrench::ComputeService *> &compute_services,
                               std::string hostname) :
             wrench::WMS(nullptr, nullptr, compute_services, {}, {}, nullptr, hostname,
@@ -95,7 +95,7 @@ public:
 
 private:
 
-    FailureTracesTest *test;
+    OldPreliminaryTest *test;
 
     int main() {
       // Create a job manager
@@ -194,12 +194,12 @@ private:
     }
 };
 
-TEST_F(FailureTracesTest, CheckHowSimgridRespondsToFailureTracesTest) {
+TEST_F(OldPreliminaryTest, DISABLED_CheckHowSimgridRespondsToFailureTracesTest) {
   DO_TEST_WITH_FORK(do_CheckHowSimgridRespondsToFailureTraces_test);
 }
 
 
-void FailureTracesTest::do_CheckHowSimgridRespondsToFailureTraces_test() {
+void OldPreliminaryTest::do_CheckHowSimgridRespondsToFailureTraces_test() {
 
 
   // Create and initialize a simulation
@@ -260,7 +260,7 @@ void FailureTracesTest::do_CheckHowSimgridRespondsToFailureTraces_test() {
 class StandardJobsAfterHostRestartsTestWMS : public wrench::WMS {
 
 public:
-    StandardJobsAfterHostRestartsTestWMS(FailureTracesTest *test,
+    StandardJobsAfterHostRestartsTestWMS(OldPreliminaryTest *test,
                              const std::set<wrench::ComputeService *> &compute_services,
                              std::string hostname) :
             wrench::WMS(nullptr, nullptr, compute_services, {}, {}, nullptr, hostname,
@@ -270,7 +270,7 @@ public:
 
 private:
 
-    FailureTracesTest *test;
+    OldPreliminaryTest *test;
 
     int main() {
       // Create a job manager
@@ -332,12 +332,12 @@ private:
     }
 };
 
-TEST_F(FailureTracesTest, DISABLED_CheckWhatHappensToRunningStandardJobAfterHostRestartsTest) {
+TEST_F(OldPreliminaryTest, DISABLED_CheckWhatHappensToRunningStandardJobAfterHostRestartsTest) {
   DO_TEST_WITH_FORK(do_CheckWhatHappensToRunningStandardJobAfterHostRestarts_test);
 }
 
 
-void FailureTracesTest::do_CheckWhatHappensToRunningStandardJobAfterHostRestarts_test() {
+void OldPreliminaryTest::do_CheckWhatHappensToRunningStandardJobAfterHostRestarts_test() {
 
 
   // Create and initialize a simulation

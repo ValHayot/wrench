@@ -566,7 +566,7 @@ namespace wrench {
 
           // starting the service
           try {
-            cs->start(cs, true); // Daemonize!
+            cs->start(cs, true, false); // Daemonize!
           } catch (std::runtime_error &e) {
             throw;
           }
@@ -678,7 +678,7 @@ namespace wrench {
                                                        messagepayload_list,
                                                        getScratch()));
           cs->simulation = this->simulation;
-          cs->start(cs, true); // Daemonize!
+          cs->start(cs, true, false); // Daemonize!
           std::get<1>(vm_tuple->second) = cs;
 
         } catch (std::runtime_error &e) {
