@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-const json = require('json-loader!./output.json');
+const json = require('./output.json');
 
 class App extends Component {
   render() {
     return (
       <div>
-        Hello
-        {json}
+        {json.hello}
       </div>
     );
   }
