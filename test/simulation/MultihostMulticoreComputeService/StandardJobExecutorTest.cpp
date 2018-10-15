@@ -54,6 +54,8 @@ public:
 
     void do_WorkUnit_test();
 
+    void do_BestFitHostSelection_test();
+
     static bool isJustABitGreater(double base, double variable) {
       return ((variable > base) && (variable < base + EPSILON));
     }
@@ -2873,6 +2875,150 @@ void StandardJobExecutorTest::do_NoTaskTest_test() {
   // Note that in these tests the WMS creates workflow tasks, which a user would
   // of course not be likely to do
   ASSERT_NO_THROW(simulation->launch());
+
+  delete simulation;
+
+  free(argv[0]);
+  free(argv);
+}
+
+/**********************************************************************/
+/**  DO BEST FIT HOST SELECTION TEST                                 **/
+/**********************************************************************/
+
+class BestFitTestWMS : public wrench::WMS {
+public:
+    BestFitTestWMS(StandardJobExecutorTest *test,
+            const std::set<wrench::ComputeService *> &compute_services,
+                    const std::set<wrench::StorageService *> &storage_services,
+                    const std::string &hostname) : wrench::WMS(nullptr, nullptr,  compute_services, storage_services, {}, nullptr, hostname, "test") {
+        this->test = test;
+    }
+
+private:
+    StandardJobExecutorTest *test;
+
+    int main() {
+
+      // Create a job manager
+      std::shared_ptr<wrench::JobManager> job_manager = this->createJobManager();
+
+      std::vector<wrench::WorkflowTask *> tasks = this->getWorkflow()->getTasks();
+
+      wrench::StandardJob *job = job_manager->createStandardJob(tasks, {});
+      job_manager->submitJob(job, *(this->getAvailableComputeServices().begin()));
+
+      this->getWorkflow()->waitForNextExecutionEvent();
+
+      return 0;
+    }
+};
+
+TEST_F(StandardJobExecutorTest, BestFitHostSelectionTest) {
+  DO_TEST_WITH_FORK(do_BestFitHostSelection_test);
+}
+
+void StandardJobExecutorTest::do_BestFitHostSelection_test() {
+    simulation = new wrench::Simulation();
+
+    int argc = 1;
+    char **argv = (char **) calloc(1, sizeof(char *));
+    argv[0] = strdup("best_fit_test");
+
+    simulation->init(&argc, argv);
+
+    const int NUM_NODES = 2;
+    const int NUM_CORES = 2;
+
+    /*
+     * Generate the platform with 1 host for the WMS, and a cluster with NUM_NODES + 1 total nodes (NUM_NODES number of nodes
+     * will be used for executing tasks. Each node has NUM_CORES number of cores.
+     */
+    std::string xml = "<?xml version='1.0'?>\n"
+                      "<!DOCTYPE platform SYSTEM \"http://simgrid.gforge.inria.fr/simgrid/simgrid.dtd\">\n"
+                      "<platform version=\"4.1\">\n"
+                      "   <zone id=\"AS0\" routing=\"Full\">\n"
+                      "     <cluster id=\"hpc.edu\" prefix=\"hpc.edu/node_\" suffix=\"\" radical=\"0-";
+    xml += std::to_string(NUM_NODES)  + "\" core=\"" + std::to_string(NUM_CORES) + "\" speed=\"1f\" bw=\"10Gbps\" lat=\"10us\" router_id=\"hpc_gateway\">\n";
+    xml += "        </cluster>\n";
+    xml += "      <zone id=\"AS3\" routing=\"Full\">\n";
+    xml += "          <host id=\"my_lab_computer.edu\" speed=\"1f\" core=\"1\"/>\n";
+    xml += "      </zone>\n";
+    xml += "      <link id=\"link1\" bandwidth=\"1Gbps\" latency=\"100us\"/>\n";
+    xml += "      <zoneRoute src=\"AS3\" dst=\"hpc.edu\" gw_src=\"my_lab_computer.edu\" gw_dst=\"hpc_gateway\">\n";
+    xml += "        <link_ctn id=\"link1\"/>\n";
+    xml += "      </zoneRoute>\n";
+    xml += "   </zone>\n";
+    xml += "</platform>\n";
+
+    // Overwrite the platform used in previous tests with this new one
+    FILE *platform_file = fopen(platform_file_path.c_str(), "w");
+    fprintf(platform_file, "%s", xml.c_str());
+    fclose(platform_file);
+
+    simulation->instantiatePlatform(platform_file_path);
+
+    // get all the hosts in the cluster zone
+    simgrid::s4u::Engine *simgrid_engine = simgrid::s4u::Engine::get_instance();
+    simgrid::s4u::NetZone *hpc_net_zone = simgrid_engine->netzone_by_name_or_null("hpc.edu");
+    std::vector<simgrid::s4u::Host *> hpc_nodes = hpc_net_zone->get_all_hosts();
+
+    // order nodes by the number postfixed to its name just so I can print them and use them in order if needed
+    std::string hpc_node_name_format("hpc.edu/node_XXX");
+    std::string::size_type index_of_node_number = hpc_node_name_format.find('_') + 1;
+
+    std::sort(hpc_nodes.begin(), hpc_nodes.end(), [&index_of_node_number] (const simgrid::s4u::Host *lhs, const simgrid::s4u::Host *rhs) {
+        return std::stoi(lhs->get_name().substr(index_of_node_number)) < std::stoi(rhs->get_name().substr(index_of_node_number));
+    });
+
+    const std::string WMS_HOST("my_lab_computer.edu");
+
+    // compute service
+    std::set<std::tuple<std::string, unsigned long, double>> compute_nodes;
+
+
+    // The compute service itself will reside at hpc.edu/node_0. All other nodes in hpc.edu will be compute resources.
+    for (auto node = hpc_nodes.begin() + 1; node != hpc_nodes.end(); ++node) {
+        compute_nodes.insert(std::make_tuple((*node)->get_name(), wrench::ComputeService::ALL_CORES, wrench::ComputeService::ALL_RAM));
+    }
+
+    wrench::ComputeService *compute_service = simulation->add(
+            new wrench::MultihostMulticoreComputeService(
+                    (*hpc_nodes.begin())->get_name(), compute_nodes, 0, {}, {}
+            )
+    );
+
+    // wms
+    wrench::WMS *wms = simulation->add(new BestFitTestWMS(this, {compute_service}, {}, WMS_HOST));
+
+    // Create the workflow of 2 independent tasks joined into 1 task (3 tasks total)
+    const int      NUM_TASKS_TO_JOIN = 2;
+    const double               FLOPS = 1.0;
+    const unsigned long    MIN_CORES = 1;
+    const unsigned long    MAX_CORES = 1;
+    const double PARALLEL_EFFICIENCY = 1.0;
+    const double  MEMORY_REQUIREMENT = 0.0;
+
+  auto final_task = workflow->addTask("task" + std::to_string(NUM_TASKS_TO_JOIN), (FLOPS / 12), MIN_CORES, MAX_CORES, PARALLEL_EFFICIENCY, MEMORY_REQUIREMENT);
+
+    for (int i = 0; i < NUM_TASKS_TO_JOIN; ++i) {
+        std::string task_id("task" + std::to_string(i));
+        auto current_task = workflow->addTask("task" + std::to_string(i), FLOPS, MIN_CORES, MAX_CORES, PARALLEL_EFFICIENCY, MEMORY_REQUIREMENT);
+        workflow->addControlDependency(current_task, final_task);
+    }
+
+    wms->addWorkflow(workflow.get());
+
+  ASSERT_NO_THROW(simulation->launch());
+
+  std::set<std::string> hosts_that_executed_tasks;
+
+  for (const auto &task : workflow->getTasks()) {
+      hosts_that_executed_tasks.insert(task->getExecutionHost());
+  }
+
+  
+  ASSERT_EQ(1, hosts_that_executed_tasks.size());
 
   delete simulation;
 
