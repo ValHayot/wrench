@@ -477,6 +477,9 @@ namespace wrench {
       std::map<std::string, std::tuple<unsigned long, double>> allocation;
 
 
+      /**
+       * First pass: assuming that all tasks are independent
+       */
       // Find the task that can use the most cores somewhere, update availabilities, repeat
       bool keep_going = true;
       while (keep_going) {
