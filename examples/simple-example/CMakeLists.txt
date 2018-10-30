@@ -35,6 +35,16 @@ else()
 endif()
 install(TARGETS wrench-simple-example-batch DESTINATION bin)
 
+# batch io example
+set(APP_BATCH_FILES SimpleSimulatorIOBatch.cpp)
+add_executable(wrench-simple-batchio ${SOURCE_FILES} ${APP_BATCH_FILES})
+if (ENABLE_BATSCHED)
+    target_link_libraries(wrench-simple-batchio wrench ${SIMGRID_LIBRARY} ${PUGIXML_LIBRARY} ${LEMON_LIBRARY} -lzmq)
+else()
+    target_link_libraries(wrench-simple-batchio wrench ${SIMGRID_LIBRARY} ${PUGIXML_LIBRARY} ${LEMON_LIBRARY})
+endif()
+install(TARGETS wrench-simple-batchio DESTINATION bin)
+
 add_custom_command(TARGET wrench-simple-example-cloud POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/examples/simple-example/platform_files $<TARGET_FILE_DIR:wrench-simple-example-cloud>/platform_files)
